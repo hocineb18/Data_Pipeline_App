@@ -38,7 +38,7 @@ def extract_reviews(html):
     script = soup.find("script", id="__NEXT_DATA__")
     if script is None:
         return []
-    raw_reviews = json.loads(script.string)["props"]["pageProps"]["reviews"]
+    raw_reviews = json.loads(script.string)["props"]["pageProps"].get("reviews", [])
     return [clean_review(review) for review in raw_reviews]
 
 
@@ -80,5 +80,5 @@ def save_to_csv(reviews, path):
 
 
 if __name__ == "__main__":
-    collected_reviews = scrape_reviews(BASE_URL, max_pages=3)
+    collected_reviews = scrape_reviews(BASE_URL, max_pages=50)
     save_to_csv(collected_reviews, OUTPUT_CSV)
